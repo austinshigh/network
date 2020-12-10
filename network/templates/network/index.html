@@ -1,0 +1,80 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+        <h2>{{header}}</h2>
+
+        {% if show_profile_attributes %}
+            <div id="following-count">Following: {{ following }}</div>
+            <div id="follower-count">Followers: {{ followers }}</div>
+
+            <div>
+                <form action="{% url 'profile' author.id %}" id="follow-form" method="post">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        {% if user.username != author.username %}
+                            {% if follow_status == "Not Followed" %}
+                                <input type="submit" value="Follow" id="follow-unfollow-btn" class="btn btn-primary">
+                            {% else %}
+                                <input type="submit" value="Unfollow" id="follow-unfollow-btn" class="btn btn-primary">
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if show_entry_form %}
+            <div class="container p-3 my-3 border">
+                <h3>New Post:</h3>
+                <form action="{% url 'index' %}" id="post-form" method="post">
+                        {% csrf_token %}
+                        {{ new_entry_form }}
+                        <input type="submit" value="Post" class="btn btn-primary">
+                </form>
+            </div>
+    {% endif %}
+
+    <div class="container">
+        {% for post in page %}
+            <div class="container p-3 my-3 border">
+                <a class="nav-link" id="author" href="{% url 'profile' post.submitter.id %}"><h3>{{post.submitter}}</h3></a>
+                {% if post.submitter.id == user.id %}
+                    <button class="btn btn-primary" id="edit" data-post="{{post.id}}">Edit</button>
+                {% endif %}
+                <div class="content" data-post="{{post.id}}">{{post.content}}</div>
+                {% if post.submitter.id == user.id %}
+                    <div class="content-input" data-post="{{post.id}}">
+                        <textarea name="postContent" class="textarea" data-post="{{post.id}}" maxlength="500" cols="70" rows="5"></textarea>
+                        <button class="btn btn-primary" id="{{post.id}}">Post</button>
+                </div>
+                {% endif %}
+                <div>{{post.posted_on}}</div>
+                <div class="like-counter">
+                    <input type="image" class="heart" data-post="{{post.id}}"
+                    src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/heart-icon.png"
+                    alt="Likes:"/>
+                    <div class="counter" data-post="{{post.id}}">{{post.likes.count}}</div>
+                </div>
+            </div>
+        {% empty %}
+            <div>No listings.</div>
+        {% endfor %}
+    <!-- Citation-Heart Image: http://icons.iconarchive.com -->
+    </div>
+    <div class="container">
+        <nav aria-label="page-navigation">
+            <ul class="pagination">
+               {% if page.has_previous %}
+                   <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a></li>
+               {% endif %}
+               {% if page.has_next %}
+                   <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Next</a></li>
+               {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <!-- Citation-Pagination HTML: https://getbootstrap.com/docs/4.4/components/pagination/ -->
+{% endblock %}

@@ -1,0 +1,19 @@
+.heart{
+    width:20px;
+}
+
+.like-counter{
+    display: flex;
+}
+
+.heart:focus{
+    outline:none;
+}
+
+textarea{
+    resize: none;
+}
+
+.content{
+    word-wrap: break-word;
+}
