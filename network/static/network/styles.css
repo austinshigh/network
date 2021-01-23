@@ -17,3 +17,19 @@ textarea{
 .content{
     word-wrap: break-word;
 }
+
+.log{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 1000px){
+    .log{
+        padding: 100px;
+        padding-left: 750px;
+        padding-right: 750px;
+        display: flex;
+        flex-direction: column;
+    }
+}
