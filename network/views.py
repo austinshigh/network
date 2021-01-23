@@ -89,6 +89,8 @@ def profile(request, user_id):
         follow_query = User.objects.filter(following=user_id)
         match_query = follow_query.filter(id=user.id)
 
+        print(match_query)
+
         # When follow button is clicked perform proper database modification
         if request.method == "POST":
             if match_query.exists():

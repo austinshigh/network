@@ -6,8 +6,8 @@
         <h2>{{header}}</h2>
 
         {% if show_profile_attributes %}
-            <div id="following-count">Following: {{ following }}</div>
-            <div id="follower-count">Followers: {{ followers }}</div>
+            <!-- <div id="following-count">Following: {{ following }}</div>
+            <div id="follower-count">Followers: {{ followers }}</div> -->
 
             <div>
                 <form action="{% url 'profile' author.id %}" id="follow-form" method="post">
